@@ -28,7 +28,7 @@ setInterval(changeHeroBackground, 5000);
         description: "ساعة ذكية مزودة بجميع الميزات الحديثة مع بطارية تدوم طويلاً.",
         price: "299 دولار",
         coupon: "خصم 10% مع الكود TECH10",
-        image: "images (2).JFIF",
+        image: "images (2).png",
         rating: 4
       },
       {
@@ -38,7 +38,7 @@ setInterval(changeHeroBackground, 5000);
         description: "سماعات بجودة صوت عالية وعزل ممتاز للضوضاء.",
         price: "149 دولار",
         coupon: "",
-        image: "images (1).JFIF",
+        image: "images (1).png",
         rating: 3
       },
       {
@@ -48,7 +48,7 @@ setInterval(changeHeroBackground, 5000);
         description: "كاميرا رقمية بدقة عالية مناسبة للمحترفين والهواة.",
         price: "850 دولار",
         coupon: "خصم 5% للطلب الأول",
-        image: "images12.JFIF",
+        image: "images12.png",
         rating: 5
       },
       {
@@ -58,7 +58,7 @@ setInterval(changeHeroBackground, 5000);
         description: "حاسوب محمول خفيف الوزن مع أداء عالي للأعمال والترفيه.",
         price: "1200 دولار",
         coupon: "",
-        image:"images (4)2.JFIF",
+        image:"images (4)2.png",
         rating: 2
       },
       {
@@ -68,7 +68,7 @@ setInterval(changeHeroBackground, 5000);
         description: "هاتف ذكي مع كاميرا قوية وشاشة كبيرة بتقنية OLED.",
         price: "650 دولار",
         coupon: "كوبون 15% لفترة محدودة",
-        image: "download.JFIF",
+        image: "download.png",
         rating: 4
       },
     ];
