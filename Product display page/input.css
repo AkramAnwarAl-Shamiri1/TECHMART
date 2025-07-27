@@ -1,0 +1,32 @@
+@import "tailwindcss";
+@layer utilities {
+  /* إخفاء شريط التمرير */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+#hero-slider {
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+
+  /* تنسيقات النجوم */
+  .star {
+    @apply cursor-pointer text-gray-300 text-xl transition-colors duration-200;
+  }
+  .star.active {
+    @apply text-yellow-400;
+  }
