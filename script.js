@@ -24,7 +24,7 @@ setInterval(changeHeroBackground, 5000);
       {
         id: 1,
         name: "ساعة يد ذكية",
-        company: "TechTime",
+        company: "Samsung",
         description: "ساعة ذكية مزودة بجميع الميزات الحديثة مع بطارية تدوم طويلاً.",
         price: "299 دولار",
         coupon: "خصم 10% مع الكود TECH10",
@@ -34,7 +34,7 @@ setInterval(changeHeroBackground, 5000);
       {
         id: 2,
         name: "سماعات لاسلكية",
-        company: "SoundMax",
+        company: "Samsung",
         description: "سماعات بجودة صوت عالية وعزل ممتاز للضوضاء.",
         price: "149 دولار",
         coupon: "",
@@ -44,7 +44,7 @@ setInterval(changeHeroBackground, 5000);
       {
         id: 3,
         name: "كاميرا احترافية",
-        company: "PhotoPro",
+        company: "Samsung",
         description: "كاميرا رقمية بدقة عالية مناسبة للمحترفين والهواة.",
         price: "850 دولار",
         coupon: "خصم 5% للطلب الأول",
@@ -54,7 +54,7 @@ setInterval(changeHeroBackground, 5000);
       {
         id: 4,
         name: "حاسوب محمول",
-        company: "ComputeX",
+        company: "Samsungg",
         description: "حاسوب محمول خفيف الوزن مع أداء عالي للأعمال والترفيه.",
         price: "1200 دولار",
         coupon: "",
@@ -64,7 +64,7 @@ setInterval(changeHeroBackground, 5000);
       {
         id: 5,
         name: "هاتف ذكي",
-        company: "SmartCell",
+        company: "Samsungg",
         description: "هاتف ذكي مع كاميرا قوية وشاشة كبيرة بتقنية OLED.",
         price: "650 دولار",
         coupon: "كوبون 15% لفترة محدودة",
