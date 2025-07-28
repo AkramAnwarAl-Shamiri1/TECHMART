@@ -1,8 +1,9 @@
+const menuToggle = document.getElementById('menu-toggle');
+const menu = document.getElementById('menu');
 
-  document.getElementById("menu-toggle").onclick = function () {
-    document.getElementById("menu").classList.toggle("hidden");
-  };
-
+menuToggle.addEventListener('click', () => {
+  menu.classList.toggle('hidden');
+});
 const heroSlider = document.getElementById("hero-slider");
 const heroImages = [
   "s.jpeg",
