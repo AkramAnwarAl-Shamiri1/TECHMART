@@ -1,4 +1,8 @@
- 
+
+  document.getElementById("menu-toggle").onclick = function () {
+    document.getElementById("menu").classList.toggle("hidden");
+  };
+
 const heroSlider = document.getElementById("hero-slider");
 const heroImages = [
   "s.jpeg",
