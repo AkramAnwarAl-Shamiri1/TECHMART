@@ -1,4 +1,4 @@
-// 1. تصحيح كلمة const بحرف صغير
+// 1. Hero Background Slider
 const heroSlider = document.getElementById("hero-slider");
 const heroImages = [
   "s.jpeg",
@@ -22,6 +22,7 @@ function changeHeroBackground() {
 changeHeroBackground();
 setInterval(changeHeroBackground, 5000);
 
+// 2. Products Data
 const products = [
   {
     id: 1,
@@ -75,6 +76,7 @@ const products = [
   },
 ];
 
+// 3. DOM Elements
 const slider = document.getElementById('product-slider');
 const modal = document.getElementById('modal');
 const modalCloseBtn = document.getElementById('modalClose');
@@ -90,12 +92,13 @@ const nextBtn = document.getElementById('nextBtn');
 
 const userRatings = {};
 
-// دالة توليد النجوم بالربط مع الكلاس active
-function renderStars(rating) {
+// 4. Star Rendering Logic (Direct Tailwind Classes)
+function renderStars(rating, isInteractive = false) {
   let starsHTML = '';
   for (let i = 1; i <= 5; i++) {
-    const isActive = i <= rating ? 'active' : '';
-    starsHTML += `<span class="star ${isActive}" data-star="${i}">★</span>`;
+    const colorClass = i <= rating ? 'text-yellow-400' : 'text-gray-300';
+    const cursorClass = isInteractive ? 'cursor-pointer hover:scale-125 transition-transform' : '';
+    starsHTML += `<span class="star text-2xl ${colorClass} ${cursorClass}" data-star="${i}">★</span>`;
   }
   return starsHTML;
 }
@@ -111,8 +114,8 @@ function createProductCards() {
       <img src="${product.image}" alt="${product.name}" class="rounded mb-4 aspect-[4/3] object-cover"/>
       <h3 class="text-xl font-semibold mb-1">${product.name}</h3>
       <p class="text-yellow-600 font-bold mb-2">${product.price}</p>
-      <div class="stars-container flex space-x-1 rtl:space-x-reverse" data-rating="${currentRating}">
-        ${renderStars(currentRating)}
+      <div class="stars-container flex gap-1" data-rating="${currentRating}">
+        ${renderStars(currentRating, false)}
       </div>
     `;
     slider.appendChild(card);
@@ -134,7 +137,7 @@ function openModal(productId) {
   modalCoupon.textContent = product.coupon || '';
 
   const currentRating = userRatings[productId] ?? product.rating;
-  modalStars.innerHTML = renderStars(currentRating);
+  modalStars.innerHTML = renderStars(currentRating, true);
 
   addStarListeners(productId);
 
@@ -152,28 +155,20 @@ modal.addEventListener('click', e => {
   if (e.target === modal) closeModal();
 });
 
-// إضافة مستمعي الأحداث للنجوم التفاعلية داخل النافذة المنبثقة
+// 5. Interactive Rating Handler
 function addStarListeners(productId) {
   const stars = modalStars.querySelectorAll('.star');
   stars.forEach(star => {
-    star.addEventListener('click', (e) => {
+    star.onclick = (e) => {
       e.stopPropagation();
       const rating = Number(star.getAttribute('data-star'));
       userRatings[productId] = rating;
-      updateModalStars(rating);
+      
+      // Update Modal & Card Views
+      modalStars.innerHTML = renderStars(rating, true);
+      addStarListeners(productId);
       updateCardStars(productId, rating);
-    });
-  });
-}
-
-function updateModalStars(rating) {
-  const stars = modalStars.querySelectorAll('.star');
-  stars.forEach((star, index) => {
-    if (index < rating) {
-      star.classList.add('active');
-    } else {
-      star.classList.remove('active');
-    }
+    };
   });
 }
 
@@ -183,29 +178,29 @@ function updateCardStars(productId, rating) {
   const starsDiv = card.querySelector('.stars-container');
   if (starsDiv) {
     starsDiv.setAttribute('data-rating', rating);
-    starsDiv.innerHTML = renderStars(rating);
+    starsDiv.innerHTML = renderStars(rating, false);
   }
 }
 
-// التحكم بالسلايدر الأفقية
+// 6. Horizontal Slider Controls
 const scrollAmount = 270;
 
 nextBtn.addEventListener('click', () => {
-  slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
   resetAutoSlide();
 });
 prevBtn.addEventListener('click', () => {
-  slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+  slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   resetAutoSlide();
 });
 
 let autoSlideInterval = setInterval(autoScroll, 4000);
 
 function autoScroll() {
-  if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 5) {
+  if (Math.abs(slider.scrollLeft) + slider.clientWidth >= slider.scrollWidth - 5) {
     slider.scrollTo({ left: 0, behavior: 'smooth' });
   } else {
-    slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
   }
 }
 
