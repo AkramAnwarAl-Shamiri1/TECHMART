@@ -57,7 +57,7 @@ const products = [
   {
     id: 4,
     name: "حاسوب محمول",
-    company: "Samsungg",
+    company: "Samsung",
     description: "حاسوب محمول خفيف الوزن مع أداء عالي للأعمال والترفيه.",
     price: "1200 دولار",
     coupon: "",
@@ -67,7 +67,7 @@ const products = [
   {
     id: 5,
     name: "هاتف ذكي",
-    company: "Samsungg",
+    company: "Samsung",
     description: "هاتف ذكي مع كاميرا قوية وشاشة كبيرة بتقنية OLED.",
     price: "650 دولار",
     coupon: "كوبون 15% لفترة محدودة",
@@ -92,13 +92,15 @@ const nextBtn = document.getElementById('nextBtn');
 
 const userRatings = {};
 
-// 4. Star Rendering Logic (Direct Tailwind Classes)
+// 4. Star Rendering Logic
 function renderStars(rating, isInteractive = false) {
   let starsHTML = '';
   for (let i = 1; i <= 5; i++) {
-    const colorClass = i <= rating ? 'text-yellow-400' : 'text-gray-300';
-    const cursorClass = isInteractive ? 'cursor-pointer hover:scale-125 transition-transform' : '';
-    starsHTML += `<span class="star text-2xl ${colorClass} ${cursorClass}" data-star="${i}">★</span>`;
+    const isFilled = i <= rating;
+    const colorStyle = isFilled ? 'color: #facc15;' : 'color: #d1d5db;';
+    const cursorStyle = isInteractive ? 'cursor: pointer; transition: transform 0.2s;' : '';
+    
+    starsHTML += `<span class="interactive-star text-2xl" data-star="${i}" style="${colorStyle} ${cursorStyle}">★</span>`;
   }
   return starsHTML;
 }
@@ -139,7 +141,7 @@ function openModal(productId) {
   const currentRating = userRatings[productId] ?? product.rating;
   modalStars.innerHTML = renderStars(currentRating, true);
 
-  addStarListeners(productId);
+  attachStarEvents(productId);
 
   modal.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
@@ -155,20 +157,44 @@ modal.addEventListener('click', e => {
   if (e.target === modal) closeModal();
 });
 
-// 5. Interactive Rating Handler
-function addStarListeners(productId) {
-  const stars = modalStars.querySelectorAll('.star');
+// 5. Direct Interactive Rating Listeners (With Hover Effects)
+function attachStarEvents(productId) {
+  const stars = modalStars.querySelectorAll('.interactive-star');
+  
   stars.forEach(star => {
+    // Hover In
+    star.onmouseenter = () => {
+      const hoverValue = Number(star.getAttribute('data-star'));
+      highlightStars(stars, hoverValue);
+    };
+
+    // Hover Out
+    star.onmouseleave = () => {
+      const currentSavedRating = userRatings[productId] ?? products.find(p => p.id === productId).rating;
+      highlightStars(stars, currentSavedRating);
+    };
+
+    // Click to Select Rating
     star.onclick = (e) => {
       e.stopPropagation();
-      const rating = Number(star.getAttribute('data-star'));
-      userRatings[productId] = rating;
+      const selectedRating = Number(star.getAttribute('data-star'));
+      userRatings[productId] = selectedRating;
       
-      // Update Modal & Card Views
-      modalStars.innerHTML = renderStars(rating, true);
-      addStarListeners(productId);
-      updateCardStars(productId, rating);
+      highlightStars(stars, selectedRating);
+      updateCardStars(productId, selectedRating);
     };
+  });
+}
+
+function highlightStars(starsArray, targetRating) {
+  starsArray.forEach((s, index) => {
+    if (index < targetRating) {
+      s.style.color = '#facc15'; // الذهبي
+      s.style.transform = 'scale(1.15)';
+    } else {
+      s.style.color = '#d1d5db'; // الرمادي
+      s.style.transform = 'scale(1)';
+    }
   });
 }
 
