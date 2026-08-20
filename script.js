@@ -1,13 +1,7 @@
 // 1. Hero Background Slider
 const heroSlider = document.getElementById("hero-slider");
 const heroImages = [
-  "s.jpeg",
-  "c.webp",
-  "cs.webp",
-  "m.webp",
-  "sci.webp",
-  "mo.webp",
-  "mob.webp",
+  "s.jpeg", "c.webp", "cs.webp", "m.webp", "sci.webp", "mo.webp", "mob.webp"
 ];
 
 let heroIndex = 0;
@@ -73,7 +67,7 @@ const products = [
     coupon: "كوبون 15% لفترة محدودة",
     image: "download.png",
     rating: 4
-  },
+  }
 ];
 
 // 3. DOM Elements
@@ -92,13 +86,12 @@ const nextBtn = document.getElementById('nextBtn');
 
 const userRatings = {};
 
-// 4. Star Rendering Engine
-function renderStars(rating, isInteractive = false) {
+// 4. Star Rendering - يعتمد مباشرة على الكلاسات الموجودة في CSS لديك
+function renderStars(rating) {
   let starsHTML = '';
   for (let i = 1; i <= 5; i++) {
-    const activeClass = i <= rating ? 'active' : '';
-    const interactiveClass = isInteractive ? 'interactive-star' : 'star';
-    starsHTML += `<span class="${interactiveClass} ${activeClass}" data-star="${i}">★</span>`;
+    const isActive = i <= rating ? 'active' : '';
+    starsHTML += `<span class="star ${isActive}" data-star="${i}">★</span>`;
   }
   return starsHTML;
 }
@@ -115,7 +108,7 @@ function createProductCards() {
       <h3 class="text-xl font-semibold mb-1">${product.name}</h3>
       <p class="text-yellow-600 font-bold mb-2">${product.price}</p>
       <div class="stars-container flex space-x-1 rtl:space-x-reverse" data-rating="${currentRating}">
-        ${renderStars(currentRating, false)}
+        ${renderStars(currentRating)}
       </div>
     `;
     slider.appendChild(card);
@@ -134,8 +127,8 @@ function openModal(productId) {
   modalCompany.textContent = `الشركة المصنعة: ${product.company}`;
   modalDescription.textContent = product.description;
   modalPrice.textContent = product.price;
-  
-  if(product.coupon) {
+
+  if (product.coupon) {
     modalCoupon.textContent = product.coupon;
     modalCoupon.classList.remove('hidden');
   } else {
@@ -143,9 +136,9 @@ function openModal(productId) {
   }
 
   const currentRating = userRatings[productId] ?? product.rating;
-  modalStars.innerHTML = renderStars(currentRating, true);
+  modalStars.innerHTML = renderStars(currentRating);
 
-  attachStarEvents(productId);
+  addStarListeners(productId);
 
   modal.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
@@ -161,38 +154,28 @@ modal.addEventListener('click', e => {
   if (e.target === modal) closeModal();
 });
 
-// 5. Star Rating Event Listeners
-function attachStarEvents(productId) {
-  const stars = modalStars.querySelectorAll('.interactive-star');
-  
+// 5. Star Rating Interactivity (تحديث كلاس active عند الضغط)
+function addStarListeners(productId) {
+  const stars = modalStars.querySelectorAll('.star');
   stars.forEach(star => {
-    star.onmouseenter = () => {
-      const hoverValue = Number(star.getAttribute('data-star'));
-      updateStarColors(stars, hoverValue);
-    };
-
-    star.onmouseleave = () => {
-      const savedRating = userRatings[productId] ?? products.find(p => p.id === productId).rating;
-      updateStarColors(stars, savedRating);
-    };
-
     star.onclick = (e) => {
       e.stopPropagation();
-      const selectedRating = Number(star.getAttribute('data-star'));
-      userRatings[productId] = selectedRating;
-      
-      updateStarColors(stars, selectedRating);
-      updateCardStars(productId, selectedRating);
+      const rating = Number(star.getAttribute('data-star'));
+      userRatings[productId] = rating;
+
+      updateModalStars(rating);
+      updateCardStars(productId, rating);
     };
   });
 }
 
-function updateStarColors(starsArray, targetRating) {
-  starsArray.forEach((s, index) => {
-    if (index < targetRating) {
-      s.classList.add('active');
+function updateModalStars(rating) {
+  const stars = modalStars.querySelectorAll('.star');
+  stars.forEach((star, index) => {
+    if (index < rating) {
+      star.classList.add('active');
     } else {
-      s.classList.remove('active');
+      star.classList.remove('active');
     }
   });
 }
@@ -203,11 +186,11 @@ function updateCardStars(productId, rating) {
   const starsDiv = card.querySelector('.stars-container');
   if (starsDiv) {
     starsDiv.setAttribute('data-rating', rating);
-    starsDiv.innerHTML = renderStars(rating, false);
+    starsDiv.innerHTML = renderStars(rating);
   }
 }
 
-// 6. Horizontal Slider Scroll
+// 6. Horizontal Slider Controls
 const scrollAmount = 270;
 
 nextBtn.addEventListener('click', () => {
